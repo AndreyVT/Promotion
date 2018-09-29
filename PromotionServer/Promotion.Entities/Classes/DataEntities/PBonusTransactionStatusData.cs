@@ -22,7 +22,7 @@
         public DateTime Date { get; set; }
 
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public PUser User { get; set; }
 

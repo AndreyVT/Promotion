@@ -11,7 +11,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Promotion.DataBase\Promotion.DataBase.csproj" />
+    <ProjectReference Include="..\Promotion.Entities\Promotion.Entities.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
-namespace PromotionServer
+﻿namespace PromotionServer
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Promotion.DataBase;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,6 +20,13 @@ namespace PromotionServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // получаем строку подключения из файла конфигурации
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+
+            // добавляем контекст MobileContext в качестве сервиса в приложение
+            services.AddDbContext<PromotionDbContext>(options =>
+                options.UseSqlServer(connection));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -38,6 +40,13 @@ namespace PromotionServer
             else
             {
                 app.UseHsts();
+            }
+
+            // создадим БД если нет
+            using (IServiceScope scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<PromotionDbContext>();
+                bool isDBCreated = dbContext.Database.EnsureCreated();
             }
 
             app.UseHttpsRedirection();

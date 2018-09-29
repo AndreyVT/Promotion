@@ -13,7 +13,7 @@
 
         public PBonus Bonus { get; set; }
 
-        public double Limit { get; set; }
+        public long Limit { get; set; }
 
         [ForeignKey(nameof(Period))]
         public int PeriodId { get; set; }
