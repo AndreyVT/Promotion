@@ -17,26 +17,17 @@
             this._dbContext.Add(user);
         }
 
-        public IEnumerable<PUser> Get()
+        public new IEnumerable<PUser> Get()
         {
             return this._dbContext.Users.ToList();
         }
 
-        public PUser GetById(int id)
+        public new PUser GetById(int id)
         {
             return this._dbContext.Users.FirstOrDefault(c => c.Id == id);
         }
 
-        public void Remove(int id)
-        {
-            var user = this.GetById(id);
-            if (user != null)
-            {
-                this._dbContext.Users.Remove(user);
-            }
-        }
-
-        public PUser Update(int entity)
+        public new PUser Update(int entity)
         {
             throw new NotImplementedException();
         }

@@ -6,6 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Promotion.Application;
     using Promotion.DataBase;
 
     public class Startup
@@ -28,6 +29,12 @@
                 options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<PromotionApplication>();
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+
+            // конфигурируем приложение
+            serviceProvider.GetService<PromotionApplication>().Configure(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

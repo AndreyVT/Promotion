@@ -29,7 +29,7 @@
             throw new System.NotImplementedException();
         }
 
-        public void Remove(int id)
+        public virtual void Remove(int id)
         {
             _dbContext.Set<IBaseEntity>().FirstOrDefault(c => c.Id == id);
             //_dbContext.Remove

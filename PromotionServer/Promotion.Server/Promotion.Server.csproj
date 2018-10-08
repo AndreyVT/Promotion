@@ -11,9 +11,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Promotion.Application\Promotion.Application.csproj" />
     <ProjectReference Include="..\Promotion.DataBase\Promotion.DataBase.csproj" />
     <ProjectReference Include="..\Promotion.Entities\Promotion.Entities.csproj" />
   </ItemGroup>
