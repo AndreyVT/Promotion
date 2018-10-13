@@ -28,7 +28,18 @@
             services.AddDbContext<PromotionDbContext>(options =>
                 options.UseSqlServer(connection));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddAuthorization()
+                .AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+           .AddIdentityServerAuthentication(options =>
+           {
+               options.Authority = "http://localhost:5000";
+               options.RequireHttpsMetadata = false;
+
+               options.ApiName = "api1";
+           });
 
             services.AddSingleton<PromotionApplication>();
             ServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -40,6 +51,8 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAuthentication();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
