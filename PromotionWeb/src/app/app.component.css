@@ -5,3 +5,7 @@
 .app-title  {
   padding: 20px;
 }
+
+.top-spacer {
+  flex: 1 1 auto;
+}

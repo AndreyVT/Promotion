@@ -2,3 +2,8 @@
   position: absolute;
   left: 5px;
 }
+
+.top-spacer {
+  flex: 1 1 auto;
+}
+

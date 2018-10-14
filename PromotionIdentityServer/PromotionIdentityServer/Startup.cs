@@ -6,22 +6,26 @@ using System.Reflection;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace QuickstartIdentityServer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
+            _loggerFactory = loggerFactory;
         }
 
+        private ILoggerFactory _loggerFactory;
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -78,6 +82,13 @@ namespace QuickstartIdentityServer
                         RoleClaimType = "role"
                     };
                 });
+
+            
+            var cors = new DefaultCorsPolicyService(_loggerFactory.CreateLogger<DefaultCorsPolicyService>())
+            {
+                AllowedOrigins = { "*" } // , "https://bar"
+            };
+            services.AddSingleton<ICorsPolicyService>(cors);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

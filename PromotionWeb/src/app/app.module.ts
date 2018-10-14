@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,12 +45,16 @@ import {  MatAutocompleteModule,
 } from '@angular/material';
 import {PromoteModule} from './promote/promote.module';
 import { InfoComponent } from './info/info.component';
+import { LoginComponent } from './login/login.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TopComponent,
-    InfoComponent
+    InfoComponent,
+    LoginComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +96,7 @@ import { InfoComponent } from './info/info.component';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
