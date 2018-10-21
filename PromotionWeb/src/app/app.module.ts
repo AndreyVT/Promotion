@@ -47,6 +47,7 @@ import {PromoteModule} from './promote/promote.module';
 import { InfoComponent } from './info/info.component';
 import { LoginComponent } from './login/login.component';
 import { LoginFormComponent } from './login-form/login-form.component';
+import { LoginGoogleComponent } from './login-google/login-google.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
     TopComponent,
     InfoComponent,
     LoginComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    LoginGoogleComponent
   ],
   imports: [
     BrowserModule,

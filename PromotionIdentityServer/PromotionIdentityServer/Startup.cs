@@ -9,6 +9,7 @@ using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,8 +33,6 @@ namespace QuickstartIdentityServer
         {
             // получаем строку подключения из файла конфигурации
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-
-            services.AddMvc();
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
@@ -65,8 +64,10 @@ namespace QuickstartIdentityServer
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-                    options.ClientId = "434483408261-55tc8n0cs4ff1fe21ea8df2o443v2iuc.apps.googleusercontent.com";
-                    options.ClientSecret = "3gcoTrEDPPJ0ukn_aYYT6PWo";
+                    options.ClientId = "352027914482-cej4hjp6mruvaf3d06psjag2j1psl4kg.apps.googleusercontent.com";
+                    options.ClientSecret = "hvqs-vWX0x1_W-EHuOrTZkm7";
+
+                    //options.CallbackPath = new PathString("/googlecallback");
                 })
                 .AddOpenIdConnect("oidc", "OpenID Connect", options =>
                 {
@@ -83,12 +84,13 @@ namespace QuickstartIdentityServer
                     };
                 });
 
-            
-            var cors = new DefaultCorsPolicyService(_loggerFactory.CreateLogger<DefaultCorsPolicyService>())
+            /*var cors = new DefaultCorsPolicyService(_loggerFactory.CreateLogger<DefaultCorsPolicyService>())
             {
                 AllowedOrigins = { "*" } // , "https://bar"
             };
-            services.AddSingleton<ICorsPolicyService>(cors);
+            services.AddSingleton<ICorsPolicyService>(cors);*/
+
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -98,6 +100,7 @@ namespace QuickstartIdentityServer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
 
             app.UseIdentityServer();
