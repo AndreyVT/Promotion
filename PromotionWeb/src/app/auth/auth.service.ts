@@ -3,8 +3,7 @@ import { environment } from './../../environments/environment';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { UserInfo } from './userInfo';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Observable, throwError} from 'rxjs';
 
 (window as any).global = window;
 
@@ -35,20 +34,8 @@ export class AuthService {
     const body = `client_id=${this.identityServiceClient_id}&client_secret=${this.identityServiceClient_secret}&` +
       `grant_type=${this.identityServiceGrant_type}&username=${userInfo.login}&password=${userInfo.password}`;
 
-    this.http
-      .post(this.identityServerUrl + 'connect/token', body, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-      .pipe(
-        catchError(this.handleError)
-      ) .subscribe(
-      (data: {}) => {
-        userInfo.authInfo = data;
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        this.setSession(data, {});
-        console.log(userInfo);
-        this.router.navigate(['/info', {}]);
-      },
-      error => console.log(error)
-    );
+    return this.http
+      .post(this.identityServerUrl + 'connect/token', body, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
   }
 
   setAccessToken() {
@@ -98,16 +85,8 @@ export class AuthService {
     return Date.now() < this.expiresAt && this.authenticated;
   }
 
-  register(registerData: UserInfo) {
-    console.log('UserInfo: ', registerData);
-    this.http.post<UserInfo>(this.identityServerUrl + 'api/user/register', registerData, this.httpOptions)
-      .subscribe(
-        (data: any) => {
-          console.log(data);
-          this.router.navigate(['/login', {}]);
-        },
-        error => console.log(error)
-      );
+  public register(registerData: UserInfo): Observable<any> {
+    return this.http.post<UserInfo>(this.identityServerUrl + 'api/user/register', registerData, this.httpOptions);
   }
 
   // Implement a method to handle errors if any

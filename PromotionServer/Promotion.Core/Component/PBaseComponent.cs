@@ -1,4 +1,5 @@
-﻿using Promotion.DataBase;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Promotion.DataBase;
 
 namespace Promotion.Core.Component
 {
@@ -16,6 +17,11 @@ namespace Promotion.Core.Component
         public virtual void PostInitialize()
         {
 
+        }
+
+        public virtual void ConfigureServices(IServiceCollection services)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

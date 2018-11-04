@@ -9,11 +9,11 @@
     using Microsoft.EntityFrameworkCore;
     using Promotion.DataBase;
     using Promotion.Entities.Dictionary;
-
+    using Promotion.Server.Base;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class RolesController : PBaseController
     {
         private readonly PromotionDbContext _context;
 

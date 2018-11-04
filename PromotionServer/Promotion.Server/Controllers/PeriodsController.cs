@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Promotion.DataBase;
 using Promotion.Entities.Classes.Dictionary;
+using Promotion.Server.Base;
 
 namespace Promotion.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class PeriodsController : PBaseController
     {
         private readonly PromotionDbContext _context;
 

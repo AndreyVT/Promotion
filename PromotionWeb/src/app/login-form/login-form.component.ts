@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 
 import { UserInfo } from '../auth/userInfo';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -19,7 +20,7 @@ export class LoginFormComponent implements OnInit {
   googleLoginActive = true;
   isRegisterEnabled = true;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.userInfo = new UserInfo();
   }
 
@@ -35,10 +36,26 @@ export class LoginFormComponent implements OnInit {
 * */
   // Implement a method to get the public deals
   login() {
-   this.authService.login(this.userInfo);
+   this.authService.login(this.userInfo)
+     .pipe(catchError(this.handleError))
+     .subscribe(
+     (data: {}) => {
+       this.userInfo.authInfo = data;
+       localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
+       this.authService.setAccessToken();
+
+       this.router.navigate(['/info', {}]);
+     },
+     error => console.log(error)
+   );
   }
 
   ngOnInit() {
   }
 
+  // Implement a method to handle errors if any
+  private handleError(err: HttpErrorResponse | any) {
+    console.error('An error occurred', err);
+    return throwError(err.message || err);
+  }
 }

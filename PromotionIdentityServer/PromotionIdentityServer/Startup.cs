@@ -1,7 +1,4 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using System;
+﻿using System;
 using System.Linq;
 using IdentityServer4;
 using IdentityServer4.Validation;
@@ -85,17 +82,21 @@ namespace QuickstartIdentityServer
                 var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                 dbContext.Database.EnsureCreated();
 
-                //UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
-
+                UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+                var defaultAdminUser = Configuration.GetSection("DefaultAdminUser");
+                var adminName = defaultAdminUser.GetValue<string>("Login");
+                var adminPassword = defaultAdminUser.GetValue<string>("Password");
                 // check Admin User and create, if not exists
-                /*var adminUser = userManager.Users.Where(u => u.UserName == "admin").FirstOrDefault();
+                var adminUser = userManager.Users.Where(u => u.UserName == adminName).FirstOrDefault();
                 if (adminUser == null)
                 {
                     //admin
-                    var adminUserApp = new ApplicationUser { UserName = "admin" };
-                    adminUserApp.Id = "admin";
-                    var result3 = userManager.CreateAsync(adminUserApp, "111111");
-                }*/
+                    var adminUserApp = new ApplicationUser { UserName = adminName };
+                    adminUserApp.Id = adminName;
+                    var result3 = userManager.CreateAsync(adminUserApp, adminPassword);
+                    var result = result3.Result;
+                    dbContext.SaveChanges();
+                }
             }
 
             app.UseDeveloperExceptionPage();

@@ -1,8 +1,9 @@
 ﻿namespace Promotion.Application
 {
     using Microsoft.Extensions.DependencyInjection;
+    using Promotion.Common.Classes;
+    using Promotion.Common.Interfaces;
     using Promotion.Core.Component;
-    using System;
 
     public class PromotionApplication: PBaseComponent
     {
@@ -14,6 +15,11 @@
         public void Configure(IServiceCollection services)
         {
             
+        }
+
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient<IUserSynchronizer, UserSynchronizer>();
         }
     }
 }

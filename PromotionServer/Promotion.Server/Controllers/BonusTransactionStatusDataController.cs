@@ -9,10 +9,11 @@
     using Microsoft.EntityFrameworkCore;
     using Promotion.DataBase;
     using Promotion.Entities.Classes.DataEntities;
+    using Promotion.Server.Base;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class BonusTransactionStatusDataController : ControllerBase
+    public class BonusTransactionStatusDataController : PBaseController
     {
         private readonly PromotionDbContext _context;
 

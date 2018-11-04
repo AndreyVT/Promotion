@@ -1,16 +1,14 @@
 ﻿namespace PromotionServer.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Promotion.Server.Base;
 
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValuesController : PBaseController
     {
         // GET api/values
         [HttpGet]
@@ -43,11 +41,5 @@
         public void Delete(int id)
         {
         }
-
-       /* [AllowAnonymous]
-        [HttpOptions]
-        public void Options()
-        {
-        }*/
     }
 }

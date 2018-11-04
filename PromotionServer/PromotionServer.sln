@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.Core", "Promotion
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.Application", "Promotion.Application\Promotion.Application.csproj", "{ABB2C329-E14F-4D39-9C6B-F8F96F4263C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotion.Server.Base", "Promotion.Server.Base\Promotion.Server.Base.csproj", "{044EC917-8AFE-40CA-AE4B-AE36264E4356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.Server.Base", "Promotion.Server.Base\Promotion.Server.Base.csproj", "{044EC917-8AFE-40CA-AE4B-AE36264E4356}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotion.Common", "Promotion.Common\Promotion.Common.csproj", "{1246847B-58B5-4F94-B18B-F99DF7B700E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{044EC917-8AFE-40CA-AE4B-AE36264E4356}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{044EC917-8AFE-40CA-AE4B-AE36264E4356}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{044EC917-8AFE-40CA-AE4B-AE36264E4356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1246847B-58B5-4F94-B18B-F99DF7B700E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1246847B-58B5-4F94-B18B-F99DF7B700E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1246847B-58B5-4F94-B18B-F99DF7B700E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1246847B-58B5-4F94-B18B-F99DF7B700E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

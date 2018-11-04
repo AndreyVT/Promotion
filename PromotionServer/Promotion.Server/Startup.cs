@@ -7,6 +7,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Promotion.Application;
+    using Promotion.Core.Component;
     using Promotion.DataBase;
 
     public class Startup
@@ -32,20 +33,22 @@
                 .AddAuthorization()
                 .AddJsonFormatters();
 
+            var identityServer = Configuration.GetSection("IdentityServer");
+            var iddentityServerUrl = identityServer.GetValue<string>("Host");
             services.AddAuthentication("Bearer")
            .AddIdentityServerAuthentication(options =>
            {
-               options.Authority = "http://localhost:5000";
+               options.Authority = iddentityServerUrl;
                options.RequireHttpsMetadata = false;
 
                options.ApiName = "api1";
            });
 
-            services.AddSingleton<PromotionApplication>();
+            services.AddSingleton<IBaseComponent, PromotionApplication>();
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
             // конфигурируем приложение
-            serviceProvider.GetService<PromotionApplication>().Configure(services);
+            serviceProvider.GetService<IBaseComponent>().ConfigureServices(services);
 
             services.AddCors(options => options.AddPolicy("AnyOrigin", p => p
                                                                             .AllowAnyOrigin()

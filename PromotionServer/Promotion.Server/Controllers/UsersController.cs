@@ -7,24 +7,30 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Promotion.Common.Interfaces;
     using Promotion.DataBase;
     using Promotion.Entities.Busines;
+    using Promotion.Server.Base;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : PBaseController
     {
         private readonly PromotionDbContext _context;
+        private readonly IUserSynchronizer _userSynchronizer;
 
-        public UsersController(PromotionDbContext context)
+        public UsersController(PromotionDbContext context, IUserSynchronizer userSynchronizer)
         {
             _context = context;
+            _userSynchronizer = userSynchronizer;
         }
 
         // GET: api/PUsers
         [HttpGet]
         public IEnumerable<PUser> GetUsers()
         {
+            _userSynchronizer.SyncUsers();
+
             return _context.Users;
         }
 
@@ -32,6 +38,8 @@
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPUser([FromRoute] int id)
         {
+            _userSynchronizer.SyncUsers();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
