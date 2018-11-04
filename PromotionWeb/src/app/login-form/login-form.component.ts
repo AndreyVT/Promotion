@@ -1,7 +1,10 @@
-import {Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+
+import { UserInfo } from '../auth/userInfo';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -11,16 +14,15 @@ import { catchError } from 'rxjs/operators';
 
 export class LoginFormComponent implements OnInit {
 
-  private identityUrl = 'http://localhost:5000/connect/token';
-  private receivedData = {};
+  userInfo: UserInfo;
 
-  private identityServiceClient_id = 'ro.client';
-  private identityServiceClient_secret = 'secret';
-  private identityServiceGrant_type = 'password';
-  private userName = 'alice';
-  private password = 'password';
+  googleLoginActive = true;
+  isRegisterEnabled = true;
 
-  constructor(private http: HttpClient) { }
+  constructor(private authService: AuthService) {
+    this.userInfo = new UserInfo();
+  }
+
 /* var data = "client_id=" + UFMSettings.identityServiceClient_id +
                 "&client_secret=" + UFMSettings.identityServiceClient_secret +
                 "&grant_type=" + UFMSettings.identityServiceGrant_type +
@@ -33,23 +35,7 @@ export class LoginFormComponent implements OnInit {
 * */
   // Implement a method to get the public deals
   login() {
-    const body = `client_id=${this.identityServiceClient_id}&client_secret=${this.identityServiceClient_secret}&` +
-    `grant_type=${this.identityServiceGrant_type}&username=${this.userName}&password=${this.password}`;
-
-    this.http
-      .post(this.identityUrl, body, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-      .pipe(
-        catchError(this.handleError)
-      ) .subscribe(
-      (data: {}) => {this.receivedData = data; },
-      error => console.log(error)
-    );
-  }
-
-  // Implement a method to handle errors if any
-  private handleError(err: HttpErrorResponse | any) {
-    console.error('An error occurred', err);
-    return throwError(err.message || err);
+   this.authService.login(this.userInfo);
   }
 
   ngOnInit() {

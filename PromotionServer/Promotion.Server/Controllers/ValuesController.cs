@@ -43,5 +43,11 @@
         public void Delete(int id)
         {
         }
+
+       /* [AllowAnonymous]
+        [HttpOptions]
+        public void Options()
+        {
+        }*/
     }
 }

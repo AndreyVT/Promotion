@@ -3,7 +3,21 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  auth: {
+    identityServerUrl: 'http://localhost:5000/',
+    identityServiceClient_id: 'ro.client',
+    identityServiceClient_secret: 'secret',
+    identityServiceGrant_type: 'password',
+    clientID: '352027914482-cej4hjp6mruvaf3d06psjag2j1psl4kg.apps.googleusercontent.com',
+    domain: 'localhost:5000', // e.g., you.auth0.com
+    audience: 'http://localhost:4200', // e.g., http://localhost:3001
+    redirect: 'http://localhost:4200/callback',
+    scope: 'openid profile email'
+  },
+  api: {
+    host: 'https://localhost:44394/api/'
+  }
 };
 
 /*

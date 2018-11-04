@@ -4,7 +4,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <mat-menu x-position="before" #menu="matMenu">
-      <button mat-menu-item><a class="docs-button mat-button" href="/promote">Раздать</a></button>
+      <button mat-menu-item (click)="promote()"><a class="docs-button mat-button">Раздать</a></button>
       <button mat-menu-item>Option 2</button>
     </mat-menu>
 

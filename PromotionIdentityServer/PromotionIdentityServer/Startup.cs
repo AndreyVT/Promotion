@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System;
 using System.Linq;
-using System.Reflection;
 using IdentityServer4;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
-using IdentityServer4.Services;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
+using PromotionIdentityServer.Data;
+using PromotionIdentityServer.Model;
+using PromotionIdentityServer.Services;
 
 namespace QuickstartIdentityServer
 {
@@ -31,33 +31,37 @@ namespace QuickstartIdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // получаем строку подключения из файла конфигурации
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var dbConnectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            services.AddDbContext<ApplicationDbContext>(options =>
+             options.UseSqlServer(dbConnectionString));
 
-            // configure identity server with in-memory stores, keys, clients and scopes
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddTestUsers(Config.GetUsers())
-                // this adds the config data from DB (clients, resources)
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                        builder.UseSqlServer(connectionString,
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                opts => {
+                    opts.Password.RequiredLength = 5;   // минимальная длина, 5
+                    opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+                    opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
+                    opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
+                    opts.Password.RequireDigit = false; // требуются ли цифры
                 })
-                // this adds the operational data from DB (codes, tokens, consents)
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                        builder.UseSqlServer(connectionString,
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-                    // this enables automatic token cleanup. this is optional.
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
-                });
+            services.AddIdentityServer(Configuration.GetSection("IdentityServer"))
+                .AddDeveloperSigningCredential()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddExtensionGrantValidator<DelegationGrantValidator>();
+
+            services.AddCors(options => options.AddPolicy("AnyOrigin", p => p
+                                                                            .AllowAnyOrigin()
+                                                                            .AllowAnyMethod()
+                                                                            .AllowAnyHeader()
+                                                                            .AllowCredentials()
+                                                                            ));
+            services.AddMvc();
 
             services.AddAuthentication()
                 .AddGoogle("Google", options =>
@@ -66,53 +70,69 @@ namespace QuickstartIdentityServer
 
                     options.ClientId = "352027914482-cej4hjp6mruvaf3d06psjag2j1psl4kg.apps.googleusercontent.com";
                     options.ClientSecret = "hvqs-vWX0x1_W-EHuOrTZkm7";
-
-                    //options.CallbackPath = new PathString("/googlecallback");
-                })
-                .AddOpenIdConnect("oidc", "OpenID Connect", options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-
-                    options.Authority = "https://demo.identityserver.io/";
-                    options.ClientId = "implicit";
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = "name",
-                        RoleClaimType = "role"
-                    };
                 });
 
-            /*var cors = new DefaultCorsPolicyService(_loggerFactory.CreateLogger<DefaultCorsPolicyService>())
-            {
-                AllowedOrigins = { "*" } // , "https://bar"
-            };
-            services.AddSingleton<ICorsPolicyService>(cors);*/
+            services.AddTransient<ExternalUserProvider>();
 
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            services.AddTransient<IExtensionGrantValidator, DelegationGrantValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            InitializeDatabase(app);
-
-            if (env.IsDevelopment())
+            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var serviceScope = serviceScopeFactory.CreateScope())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
+
+                //UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+
+                // check Admin User and create, if not exists
+                /*var adminUser = userManager.Users.Where(u => u.UserName == "admin").FirstOrDefault();
+                if (adminUser == null)
+                {
+                    //admin
+                    var adminUserApp = new ApplicationUser { UserName = "admin" };
+                    adminUserApp.Id = "admin";
+                    var result3 = userManager.CreateAsync(adminUserApp, "111111");
+                }*/
             }
 
+            app.UseDeveloperExceptionPage();
+            app.UseCors("AnyOrigin");
             app.UseIdentityServer();
 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+           /*app.UseIdentityServer();
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvcWithDefaultRoute();*/
         }
 
-        private void InitializeDatabase(IApplicationBuilder app)
+        /*private void InitializeDatabase(IApplicationBuilder app)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
+                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
+
+                var um = app.ApplicationServices.GetRequiredService<UserManager<ApplicationUser>>();
+
+                // check Admin User and create, if not exists
+                var adminUser = um.Users.Where(u => u.UserName == "admin").FirstOrDefault();
+                if (adminUser == null)
+                {
+                    //admin
+                    var adminUserApp = new ApplicationUser { UserName = "admin" };
+                    adminUserApp.Id = "admin";
+                    var result3 = um.CreateAsync(adminUserApp, "111111");
+                }
+
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
@@ -144,7 +164,7 @@ namespace QuickstartIdentityServer
                     context.SaveChanges();
                 }
             }
-        }
+        }*/
     }
 }
 

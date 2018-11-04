@@ -46,6 +46,13 @@
 
             // конфигурируем приложение
             serviceProvider.GetService<PromotionApplication>().Configure(services);
+
+            services.AddCors(options => options.AddPolicy("AnyOrigin", p => p
+                                                                            .AllowAnyOrigin()
+                                                                            .AllowAnyMethod()
+                                                                            .AllowAnyHeader()
+                                                                            .AllowCredentials()
+                                                                            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +78,7 @@
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseCors("AnyOrigin");
         }
     }
 }

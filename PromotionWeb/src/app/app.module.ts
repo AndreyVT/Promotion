@@ -1,13 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { AuthService } from './auth/auth.service';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TopComponent } from './top/top.component';
-import {  MatAutocompleteModule,
+import { MatAutocompleteModule,
   MatBadgeModule,
   MatBottomSheetModule,
   MatButtonModule,
@@ -43,11 +47,16 @@ import {  MatAutocompleteModule,
   MatTooltipModule,
   MatTreeModule,
 } from '@angular/material';
-import {PromoteModule} from './promote/promote.module';
+import { PromoteComponent } from './promote/promote.component';
 import { InfoComponent } from './info/info.component';
 import { LoginComponent } from './login/login.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { LoginGoogleComponent } from './login-google/login-google.component';
+import { CallbackComponent } from './callback/callback.component';
+import { RegisterComponent } from './register/register.component';
+import { FormsModule } from '@angular/forms';
+import { ValueService } from './shared/services/value.service';
+import { AuthenticationInterceptor } from './auth/authRequestOptions';
 
 @NgModule({
   declarations: [
@@ -56,12 +65,15 @@ import { LoginGoogleComponent } from './login-google/login-google.component';
     InfoComponent,
     LoginComponent,
     LoginFormComponent,
-    LoginGoogleComponent
+    LoginGoogleComponent,
+    CallbackComponent,
+    RegisterComponent,
+    PromoteComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
-    PromoteModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,
     MatBadgeModule,
@@ -100,7 +112,15 @@ import { LoginGoogleComponent } from './login-google/login-google.component';
     MatTreeModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    ValueService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
