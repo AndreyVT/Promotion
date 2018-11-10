@@ -9,5 +9,6 @@
         public string ExternalId { get; set; }
         public string FullName { get; set; }
         public bool IsEnabled { get; set; }
+        public string EMail { get; set; }
     }
 }

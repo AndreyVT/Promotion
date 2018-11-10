@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { UserInfo } from '../auth/userInfo';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { UserSettingsService } from '../users/settings/user-settings.service';
 
 @Component({
   selector: 'app-login-form',
@@ -20,7 +21,7 @@ export class LoginFormComponent implements OnInit {
   googleLoginActive = true;
   isRegisterEnabled = true;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private userSettingsService: UserSettingsService) {
     this.userInfo = new UserInfo();
   }
 
@@ -44,7 +45,12 @@ export class LoginFormComponent implements OnInit {
        localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
        this.authService.setAccessToken();
 
-       this.router.navigate(['/info', {}]);
+       this.userSettingsService.getUserSettings().subscribe((data1: {}) => {
+         console.log(data1);
+         this.router.navigate(['/info', {}]);
+       },
+         error1 => console.log(error1)
+       );
      },
      error => console.log(error)
    );

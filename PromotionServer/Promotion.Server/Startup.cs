@@ -9,6 +9,7 @@
     using Promotion.Application;
     using Promotion.Core.Component;
     using Promotion.DataBase;
+    using Promotion.Server.Init;
 
     public class Startup
     {
@@ -34,11 +35,11 @@
                 .AddJsonFormatters();
 
             var identityServer = Configuration.GetSection("IdentityServer");
-            var iddentityServerUrl = identityServer.GetValue<string>("Host");
+            var identityServerUrl = identityServer.GetValue<string>("Host");
             services.AddAuthentication("Bearer")
            .AddIdentityServerAuthentication(options =>
            {
-               options.Authority = iddentityServerUrl;
+               options.Authority = identityServerUrl;
                options.RequireHttpsMetadata = false;
 
                options.ApiName = "api1";
@@ -77,6 +78,9 @@
             {
                 var dbContext = scope.ServiceProvider.GetService<PromotionDbContext>();
                 bool isDBCreated = dbContext.Database.EnsureCreated();
+
+                FirstInit startApInit = new FirstInit(dbContext);
+                startApInit.Init();
             }
 
             app.UseHttpsRedirection();

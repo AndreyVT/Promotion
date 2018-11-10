@@ -4,6 +4,7 @@
     using Promotion.Entities.Busines;
     using Promotion.Entities.Classes.DataEntities;
     using Promotion.Entities.Classes.Dictionary;
+    using Promotion.Entities.Classes.Links;
     using Promotion.Entities.Dictionary;
     
     public class PromotionDbContext: DbContext
@@ -26,5 +27,8 @@
         public DbSet<PBonusTransactionStatus> BonusTransactionStatus { get; set; }
         public DbSet<PPeriod> Period { get; set; }
         public DbSet<PRole> Role { get; set; }
+
+        // links
+        public DbSet<PUserRole> UserRole { get; set; }
     }
 }

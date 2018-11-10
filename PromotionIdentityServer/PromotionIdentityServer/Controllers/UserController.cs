@@ -5,8 +5,10 @@
     using Microsoft.AspNetCore.Mvc;
     using PromotionIdentityServer.Model;
     using PromotionIdentityServer.ViewModels;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -18,6 +20,7 @@
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("register")]
         public IActionResult Register([FromBody]RegisterUserModel registerUserModel)
@@ -36,6 +39,22 @@
             }
 
             return new OkObjectResult(newUser);
+        }
+
+        [HttpGet]
+        [Route("{userId}")]
+        public ActionResult<ApplicationUser> GetById(string userId)
+        {
+            return _userManager.Users.Where(c => c.Id == userId).FirstOrDefault();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getByLogin/{login}")]
+        public ActionResult<ApplicationUser> GetByLogin([FromRoute]string login)
+        {
+            ApplicationUser user = _userManager.Users.Where(c => c.UserName == login).FirstOrDefault();
+            return user;
         }
     }
 }

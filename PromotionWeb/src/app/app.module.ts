@@ -57,6 +57,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { ValueService } from './shared/services/value.service';
 import { AuthenticationInterceptor } from './auth/authRequestOptions';
+import { UserSettingsService } from './users/settings/user-settings.service';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { AuthenticationInterceptor } from './auth/authRequestOptions';
   providers: [
     AuthService,
     ValueService,
+    UserSettingsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,

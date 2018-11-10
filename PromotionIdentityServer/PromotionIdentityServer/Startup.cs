@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PromotionIdentityServer.Controllers;
 using PromotionIdentityServer.Data;
 using PromotionIdentityServer.Model;
 using PromotionIdentityServer.Services;
@@ -72,6 +73,8 @@ namespace QuickstartIdentityServer
             services.AddTransient<ExternalUserProvider>();
 
             services.AddTransient<IExtensionGrantValidator, DelegationGrantValidator>();
+
+            services.AddTransient<UserController>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -41,7 +41,7 @@ export class AuthService {
   setAccessToken() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     if (userInfo) {
-      this.setSession(userInfo.authInfo, {});
+      this.setSession(userInfo.authInfo, userInfo);
     }
   }
 
