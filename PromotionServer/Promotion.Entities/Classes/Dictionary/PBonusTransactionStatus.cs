@@ -1,7 +1,5 @@
-﻿namespace Promotion.Entities.Classes.Dictionary
+﻿namespace Promotion.Domain.Entities
 {
-    using Promotion.Entities.Classes.Base;
-
     public class PBonusTransactionStatus: BaseDictionaryEntity
     {
     }

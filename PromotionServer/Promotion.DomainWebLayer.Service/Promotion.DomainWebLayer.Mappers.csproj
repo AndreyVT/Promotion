@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Promotion.Common\Promotion.Common.csproj" />
     <ProjectReference Include="..\Promotion.Core\Promotion.Core.csproj" />
     <ProjectReference Include="..\Promotion.DalDomainLayer.Services\Promotion.DalDomainLayer.Services.csproj" />
-    <ProjectReference Include="..\Promotion.DomainWebLayer.Service\Promotion.DomainWebLayer.Mappers.csproj" />
+    <ProjectReference Include="..\Promotion.Domain.Services\Promotion.Domain.Services.csproj" />
+    <ProjectReference Include="..\Promotion.Server.Web.ViewModel\Promotion.Server.Web.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

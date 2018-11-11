@@ -1,7 +1,5 @@
-﻿namespace Promotion.Entities.Classes.Base
+﻿namespace Promotion.Domain.Entities
 {
-    using Promotion.Entities.Interfaces.Interfaces;
-
     public class BaseBusinesEntity: BaseEntity, IBaseBusinesEntity
     {
         public string Name { get; set; }

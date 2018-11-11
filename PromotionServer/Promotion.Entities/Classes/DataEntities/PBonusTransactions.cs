@@ -1,9 +1,5 @@
-﻿namespace Promotion.Entities.Classes.DataEntities
+﻿namespace Promotion.Domain.Entities
 {
-    using Promotion.Entities.Busines;
-    using Promotion.Entities.Classes.Base;
-    using Promotion.Entities.Classes.Dictionary;
-    using Promotion.Entities.Dictionary;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("BonusTransactions")]

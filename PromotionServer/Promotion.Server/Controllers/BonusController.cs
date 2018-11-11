@@ -1,14 +1,12 @@
 ﻿namespace Promotion.Server.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Promotion.DataBase;
-    using Promotion.Entities.Dictionary;
+    using Promotion.Domain.Entities;
     using Promotion.Server.Base;
 
     [Route("api/[controller]")]

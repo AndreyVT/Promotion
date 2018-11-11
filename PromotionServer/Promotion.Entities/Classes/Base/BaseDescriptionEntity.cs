@@ -1,4 +1,4 @@
-﻿namespace Promotion.Entities.Classes.Base
+﻿namespace Promotion.Domain.Entities
 {
     public class BaseDescriptionEntity: BaseEntity
     {

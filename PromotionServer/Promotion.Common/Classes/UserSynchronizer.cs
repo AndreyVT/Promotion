@@ -45,32 +45,7 @@
 
         public async Task<IdentityServerUserInfo> GetUserInfo(string userLogin)
         {
-            // string body = $"client_id={identityServiceClientId}&client_secret={identityServiceClientSecret}&grant_type={identityServiceGrantType}&username={login}&password={password}";
-            
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-            
-            /* try
-            {
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
-            }
-            catch(Exception ex)
-            {  // Misused header name. Make sure request headers are used with HttpRequestMessage, response headers with HttpResponseMessage, and content headers with HttpContent objects.
-                string message = ex.Message;
-            }
-
-            List<KeyValuePair<string, string>> nameValueCollection = new List<KeyValuePair<string, string>>();
-            nameValueCollection.Add(new KeyValuePair<string, string>("client_id", identityServiceClientId));
-            nameValueCollection.Add(new KeyValuePair<string, string>("client_secret", identityServiceClientSecret));
-            nameValueCollection.Add(new KeyValuePair<string, string>("grant_type", identityServiceGrantType));
-            nameValueCollection.Add(new KeyValuePair<string, string>("username", login));
-            nameValueCollection.Add(new KeyValuePair<string, string>("password", password));
-
-            StringContent stringContent = new StringContent(body);
-            FormUrlEncodedContent formUrlEncodedContent = new FormUrlEncodedContent(nameValueCollection);
-
-            stringContent.Headers.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");*/
-
-            // var result = httpClient.PostAsync($"{identityServerUrl}/connect/token", formUrlEncodedContent).Result;
+          
             var disco = await DiscoveryClient.GetAsync(identityServerUrl);
             if (disco.IsError)
             {

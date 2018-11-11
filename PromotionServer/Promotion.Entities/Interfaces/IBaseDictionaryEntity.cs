@@ -1,4 +1,4 @@
-﻿namespace Promotion.Entities.Interfaces.Interfaces
+﻿namespace Promotion.Domain.Entities
 {
     public interface IBaseDictionaryEntity
     {

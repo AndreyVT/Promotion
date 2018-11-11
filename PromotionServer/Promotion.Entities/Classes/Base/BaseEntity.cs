@@ -1,8 +1,7 @@
-﻿using Promotion.Entities.Interfaces.Interfaces;
-using System.ComponentModel.DataAnnotations;
-
-namespace Promotion.Entities.Classes.Base
+﻿namespace Promotion.Domain.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class BaseEntity: IBaseEntity
     {
         [Key]

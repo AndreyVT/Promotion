@@ -19,8 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Promotion.Application\Promotion.Application.csproj" />
     <ProjectReference Include="..\Promotion.DataBase\Promotion.DataBase.csproj" />
-    <ProjectReference Include="..\Promotion.Entities\Promotion.Entities.csproj" />
+    <ProjectReference Include="..\Promotion.DomainWebLayer.Service\Promotion.DomainWebLayer.Mappers.csproj" />
+    <ProjectReference Include="..\Promotion.Entities\Promotion.Domain.Entities.csproj" />
     <ProjectReference Include="..\Promotion.Server.Base\Promotion.Server.Base.csproj" />
+    <ProjectReference Include="..\Promotion.Server.Web.ViewModel\Promotion.Server.Web.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,7 @@
     using Promotion.Application;
     using Promotion.Core.Component;
     using Promotion.DataBase;
+    using Promotion.DomainWebLayer.Mappers;
     using Promotion.Server.Init;
 
     public class Startup
@@ -45,11 +46,11 @@
                options.ApiName = "api1";
            });
 
-            services.AddSingleton<IBaseComponent, PromotionApplication>();
+            services.AddSingleton<PromotionApplication>();
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
             // конфигурируем приложение
-            serviceProvider.GetService<IBaseComponent>().ConfigureServices(services);
+            serviceProvider.GetService<PromotionApplication>().ConfigureServices(services);
 
             services.AddCors(options => options.AddPolicy("AnyOrigin", p => p
                                                                             .AllowAnyOrigin()
@@ -79,8 +80,11 @@
                 var dbContext = scope.ServiceProvider.GetService<PromotionDbContext>();
                 bool isDBCreated = dbContext.Database.EnsureCreated();
 
-                FirstInit startApInit = new FirstInit(dbContext);
-                startApInit.Init();
+                if (isDBCreated)
+                {
+                    FirstInit startApInit = new FirstInit(dbContext);
+                    startApInit.Init();
+                }
             }
 
             app.UseHttpsRedirection();

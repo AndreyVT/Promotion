@@ -1,11 +1,7 @@
 ﻿namespace Promotion.DataBase
 {
     using Microsoft.EntityFrameworkCore;
-    using Promotion.Entities.Busines;
-    using Promotion.Entities.Classes.DataEntities;
-    using Promotion.Entities.Classes.Dictionary;
-    using Promotion.Entities.Classes.Links;
-    using Promotion.Entities.Dictionary;
+    using Promotion.Domain.Entities;
     
     public class PromotionDbContext: DbContext
     {
@@ -30,5 +26,11 @@
 
         // links
         public DbSet<PUserRole> UserRole { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // modelBuilder.Entity<PUserRole>(). HasOne(c =>  c.User c.Role } );
+            // modelBuilder.Entity<PUserRole>().HasOne(c => c.Role);
+        }
     }
 }

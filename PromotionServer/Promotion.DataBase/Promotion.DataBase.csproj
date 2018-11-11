@@ -9,11 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Promotion.Entities\Promotion.Entities.csproj" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\Promotion.Entities\Promotion.Domain.Entities.csproj" />
   </ItemGroup>
 
 </Project>

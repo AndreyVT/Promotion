@@ -1,10 +1,7 @@
-﻿using Promotion.Entities.Busines;
-using Promotion.Entities.Classes.Base;
-using Promotion.Entities.Dictionary;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Promotion.Entities.Classes.Links
+﻿namespace Promotion.Domain.Entities
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("UserRoles")]
     public class PUserRole: BaseEntity
     {

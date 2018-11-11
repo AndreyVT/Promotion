@@ -1,6 +1,5 @@
-﻿namespace Promotion.Entities.Busines
+﻿namespace Promotion.Domain.Entities
 {
-    using Promotion.Entities.Classes.Base;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("User")]

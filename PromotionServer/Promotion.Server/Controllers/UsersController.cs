@@ -9,48 +9,46 @@
     using Microsoft.EntityFrameworkCore;
     using Promotion.Common;
     using Promotion.Common.Dictionaries;
-    using Promotion.Common.DomainEntities;
     using Promotion.Common.Interfaces;
     using Promotion.DataBase;
-    using Promotion.Entities.Busines;
-    using Promotion.Entities.Dictionary;
+    using Promotion.Domain.Entities;
+    using Promotion.Domain.Services;
+    using Promotion.DomainWebLayer.Mappers;
     using Promotion.Server.Base;
+    using Promotion.Server.Web.ViewModel;
 
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : PBaseController
     {
-        private readonly PromotionDbContext _context;
         private readonly IUserSynchronizer _userSynchronizer;
+        private readonly UserSettingsMapper _userSettingsMapper;
+        private readonly UserService _userService;
+        private readonly UserRolesService _userRolesService;
+        private readonly RoleService _roleService;
 
-        public UsersController(PromotionDbContext context, IUserSynchronizer userSynchronizer)
+        public UsersController(IUserSynchronizer userSynchronizer, UserSettingsMapper userSettingsMapper, UserService userService, UserRolesService userRolesService, RoleService roleService)
         {
-            _context = context;
             _userSynchronizer = userSynchronizer;
+            _userSettingsMapper = userSettingsMapper;
+            _userService = userService;
+            _userRolesService = userRolesService;
+            _roleService = roleService;
         }
 
         // GET: api/PUsers
         [HttpGet]
         public IEnumerable<PUser> GetUsers()
         {
-            _userSynchronizer.SyncUsers();
-
-            return _context.Users;
+            return _userService.Get();
         }
 
         // GET: api/PUsers/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPUser([FromRoute] int id)
         {
-            _userSynchronizer.SyncUsers();
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var pUser = await _context.Users.FindAsync(id);
+            var pUser = await _userService.FindAsync(id);
 
             if (pUser == null)
             {
@@ -64,33 +62,7 @@
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPUser([FromRoute] int id, [FromBody] PUser pUser)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != pUser.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(pUser).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PUserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+           await _userService.Update(pUser);
 
             return NoContent();
         }
@@ -104,8 +76,7 @@
                 return BadRequest(ModelState);
             }
 
-            _context.Users.Add(pUser);
-            await _context.SaveChangesAsync();
+            await _userService.Create(pUser);
 
             return CreatedAtAction("GetPUser", new { id = pUser.Id }, pUser);
         }
@@ -114,29 +85,44 @@
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePUser([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+           await _userService.Remove(id);
 
-            var pUser = await _context.Users.FindAsync(id);
-            if (pUser == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(pUser);
-            await _context.SaveChangesAsync();
-
-            return Ok(pUser);
+            return Ok();
         }
 
         [HttpGet("{userLogin}/settings")]
         public async Task<IActionResult> GetUserSettings([FromRoute]string userLogin)
         {
+            await AutoRegisterUser(userLogin);
+
+            UserSettingsVM userSettingsVM = _userSettingsMapper.GetUserSettings(userLogin);
+
+            return new OkObjectResult(userSettingsVM);
+        }
+
+        private void AddUserRole(PUser user, string roleLogicalName)
+        {
+            PRole role = _roleService.GetRoleByLogicalName(roleLogicalName);
+
+            if (role == null)
+            {
+                throw new Exception();
+            }
+
+            _userRolesService.Add(new PUserRole() { Role = role, User = user });
+        }
+
+        /// <summary>
+        /// Первому пользовтаелю автоматом дадим права админа
+        /// Второму - менеджера
+        /// Всех регистриуем в юзерах если еще нет с таким логином
+        /// </summary>
+        /// <param name="userLogin"></param>
+        private async Task AutoRegisterUser(string userLogin)
+        {
             IdentityServerUserInfo userInfo = await _userSynchronizer.GetUserInfo(userLogin);
 
-            var user = _context.Users.Where(c => c.ExternalId == userInfo.id).FirstOrDefault();
+            PUser user = _userService.GetUserByExternalId(userInfo.id);
             if (user == null)
             {
                 user = new PUser
@@ -145,45 +131,24 @@
                     EMail = userInfo.email
                 };
 
-                user = _context.Users.Add(user).Entity;
-                _context.SaveChanges();
+                user = _userService.Create(user).Result;
 
-                if (_context.Users.Count() == 1)
+                if (_userService.Get().Count() == 1)
                 {
-                    AddUser(user, Roles.Admin.LogicalName);
+                    AddUserRole(user, Roles.Admin.LogicalName);
                 }
                 else
                 {
-                    if (_context.Users.Count() == 2)
+                    if (_userService.Get().Count() == 2)
                     {
-                        AddUser(user, Roles.Manager.LogicalName);
+                        AddUserRole(user, Roles.Manager.LogicalName);
                     }
                     else
                     {
-                        AddUser(user, Roles.User.LogicalName);
+                        AddUserRole(user, Roles.User.LogicalName);
                     }
                 }
-                _context.SaveChanges();
             }
-
-            return Ok(userInfo);
-        }
-
-        private void AddUser(PUser user, string roleLogicalName)
-        {
-            var role = _context.Role.Where(c => c.LogicalName == roleLogicalName).FirstOrDefault();
-
-            if (role == null)
-            {
-                throw new Exception();
-            }
-
-            _context.UserRole.Add(new Entities.Classes.Links.PUserRole() { Role = role, User = user });
-        }
-
-        private bool PUserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

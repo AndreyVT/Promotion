@@ -1,27 +1,18 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Promotion.DataBase;
-
-namespace Promotion.Core.Component
+﻿namespace Promotion.Core.Component
 {
-    public class PBaseComponent: IBaseComponent
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>
+    /// Абстрактный класс для компонентов приложения
+    /// </summary>
+    public abstract class PBaseComponent: IBaseComponent
     {
-        public virtual void Initialize()
-        {
-        }
+        public abstract void Initialize();
 
-        public virtual void PreInitialize()
-        {
+        public abstract void PreInitialize();
 
-        }
+        public abstract void PostInitialize();
 
-        public virtual void PostInitialize()
-        {
-
-        }
-
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void ConfigureServices(IServiceCollection services);
     }
 }

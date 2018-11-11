@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Promotion.DataBase;
-using Promotion.Entities.Classes.Dictionary;
-using Promotion.Server.Base;
-
-namespace Promotion.Server.Controllers
+﻿namespace Promotion.Server.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Promotion.DataBase;
+    using Promotion.Domain.Entities;
+    using Promotion.Server.Base;
+
     [Route("api/[controller]")]
     [ApiController]
     public class PeriodsController : PBaseController

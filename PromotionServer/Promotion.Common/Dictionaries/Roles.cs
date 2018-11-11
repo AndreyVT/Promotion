@@ -1,6 +1,6 @@
 ﻿namespace Promotion.Common.Dictionaries
 {
-    using Promotion.Entities.Dictionary;
+    using Promotion.Domain.Entities;
 
     public class Roles
     {

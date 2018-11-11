@@ -1,8 +1,5 @@
-﻿namespace Promotion.Entities.Busines
+﻿namespace Promotion.Domain.Entities
 {
-    using Promotion.Entities.Classes.Base;
-    using Promotion.Entities.Classes.Dictionary;
-    using Promotion.Entities.Dictionary;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("BonusLimit")]

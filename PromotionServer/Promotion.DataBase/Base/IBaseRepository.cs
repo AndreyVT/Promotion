@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
      
-    public interface IBaseService<TEntity, TEntityId>
+    public interface IBaseRepository<TEntity, TEntityId>
     {
-        void Add(TEntity entity);
-        TEntity Update(TEntityId entity);
+        TEntity Add(TEntity entity);
+        TEntity Update(TEntity entity);
         IEnumerable<TEntity> Get();
         TEntity GetById(TEntityId id);
         void Remove(TEntityId id);
