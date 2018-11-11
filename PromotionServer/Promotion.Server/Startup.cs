@@ -63,8 +63,6 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseAuthentication();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -87,9 +85,18 @@
                 }
             }
 
+            // CORS
+            // https://docs.asp.net/en/latest/security/cors.html
+            app.UseCors(builder =>
+                    builder.WithOrigins("http://localhost:4200", "*") // http://www.myclientserver.com
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+
             app.UseHttpsRedirection();
+            
+            //app.UseCors("AnyOrigin");
+            app.UseAuthentication();
             app.UseMvc();
-            app.UseCors("AnyOrigin");
         }
     }
 }

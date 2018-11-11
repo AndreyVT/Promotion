@@ -47,7 +47,7 @@ export class LoginFormComponent implements OnInit {
 
        this.userSettingsService.getUserSettings().subscribe((data1: {}) => {
          console.log(data1);
-         this.router.navigate(['/info', {}]);
+         this.router.navigate(['/promote', {}]);
        },
          error1 => console.log(error1)
        );
