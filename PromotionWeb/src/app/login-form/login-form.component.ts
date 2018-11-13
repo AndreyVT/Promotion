@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -42,11 +42,14 @@ export class LoginFormComponent implements OnInit {
      .subscribe(
      (data: {}) => {
        this.userInfo.authInfo = data;
+       this.userInfo.password = '';
        localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
        this.authService.setAccessToken();
 
        this.userSettingsService.getUserSettings().subscribe((data1: {}) => {
          console.log(data1);
+         localStorage.setItem('userSettings', JSON.stringify(data1));
+
          this.router.navigate(['/promote', {}]);
        },
          error1 => console.log(error1)

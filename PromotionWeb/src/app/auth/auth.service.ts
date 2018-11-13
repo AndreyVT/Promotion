@@ -57,13 +57,10 @@ export class AuthService {
     this.authenticated = true;
   }
 
-  getUserInfo(authResult) {
-    // Use access token to retrieve user's profile and set session
-    /*this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
-      if (profile) {
-        this._setSession(authResult, profile);
-      }
-    });*/
+  getUserInfo() {
+    if (this.isLoggedIn) {
+      return this.userProfile;
+    }
   }
 
   logout() {

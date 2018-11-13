@@ -1,28 +1,18 @@
 <div>
   <mat-toolbar color="primary">
     <button mat-icon-button [mat-menu-trigger-for]="menu">
-      <mat-icon>menu</mat-icon>
-    </button>
+    <mat-icon>menu</mat-icon>
+  </button>
     <mat-menu x-position="before" #menu="matMenu">
       <button mat-menu-item (click)="promote()"><a class="docs-button mat-button">Раздать</a></button>
       <button mat-menu-item>Option 2</button>
     </mat-menu>
 
-    <a _ngcontent-c1="" aria-label="Angular Material" class="docs-button mat-button" mat-button="" routerlink="/"
-       tabindex="0" aria-disabled="false" href="/">
-      <span class="mat-button-wrapper">
-        <span><mat-icon>recent_actors</mat-icon></span>
-        <span class="app-title">{{title}}</span>
-      </span>
-      <div class="mat-button-ripple mat-ripple" matripple=""></div>
-      <div class="mat-button-focus-overlay"></div>
+    <a aria-label="Angular Material" class="docs-button mat-button" mat-button="" routerlink="/" tabindex="0" aria-disabled="false" href="/">
+      <h2>{{title}}</h2>
     </a>
 
     <div class="top-spacer"></div>
-
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
-    </button>
 
     <app-login></app-login>
   </mat-toolbar>
