@@ -1,11 +1,12 @@
 <div>
   <mat-toolbar color="primary">
-    <button mat-icon-button [mat-menu-trigger-for]="menu">
+    <button mat-icon-button [mat-menu-trigger-for]="menu" *ngIf="authService.isLoggedIn">
     <mat-icon>menu</mat-icon>
   </button>
     <mat-menu x-position="before" #menu="matMenu">
-      <button mat-menu-item (click)="promote()"><a class="docs-button mat-button">Раздать</a></button>
-      <button mat-menu-item>Option 2</button>
+      <button mat-menu-item (click)="promote()" *ngIf="permissionsService.isSegmentAllow('promote')">Раздать</button>
+      <button mat-menu-item (click)="users()" *ngIf="permissionsService.isSegmentAllow('users')">Пользователи</button>
+      <button mat-menu-item (click)="management()" *ngIf="permissionsService.isSegmentAllow('management')">Управление</button>
     </mat-menu>
 
     <a aria-label="Angular Material" class="docs-button mat-button" mat-button="" routerlink="/" tabindex="0" aria-disabled="false" href="/">

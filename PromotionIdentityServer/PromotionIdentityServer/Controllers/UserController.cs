@@ -27,6 +27,7 @@
         {
             ApplicationUser newUser = new ApplicationUser
             {
+                Id = registerUserModel.Login,
                 Email = registerUserModel.EMail,
                 UserName = registerUserModel.Login,
                 NormalizedUserName = registerUserModel.FullName,

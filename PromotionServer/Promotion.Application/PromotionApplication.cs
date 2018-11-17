@@ -62,6 +62,7 @@
             services.AddTransient<UserRolesService>();
             services.AddTransient<UserService>();
             services.AddTransient<RoleService>();
+            services.AddTransient<UserPermissionsService>();
         }
     }
 }

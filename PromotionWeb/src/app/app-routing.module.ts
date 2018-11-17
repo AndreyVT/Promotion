@@ -14,7 +14,10 @@ const routes: Routes = [
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'callback', component: CallbackComponent },
+
   { path: 'promote', component: PromoteComponent, canActivate: [AuthGuard], },
+  { path: 'users', component: PromoteComponent, canActivate: [AuthGuard], },
+  { path: 'management', component: PromoteComponent, canActivate: [AuthGuard], },
 ]; // loadChildren: './info/info.component'
 
 @NgModule({
