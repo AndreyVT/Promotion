@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ValueService } from '../shared/services/value.service';
+import { Month } from '../shared/classes/month';
 
 @Component({
   selector: 'app-promote',
@@ -7,6 +8,8 @@ import { ValueService } from '../shared/services/value.service';
   styleUrls: ['./promote.component.css']
 })
 export class PromoteComponent implements OnInit {
+
+  currentPeriod: Month;
 
   constructor(private valueService: ValueService) { }
 
@@ -16,5 +19,10 @@ export class PromoteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentPeriod = new Month(new Date());
+  }
+
+  onPeriodChanged($event: Month) {
+    console.log('Event: ', $event);
   }
 }

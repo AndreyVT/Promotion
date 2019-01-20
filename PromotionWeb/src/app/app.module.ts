@@ -59,6 +59,7 @@ import { ValueService } from './shared/services/value.service';
 import { AuthenticationInterceptor } from './auth/authRequestOptions';
 import { UserSettingsService } from './users/settings/user-settings.service';
 import { PermissionsService } from './shared/services/permissions.service';
+import { SelectMonthComponent } from './shared/components/select-month/select-month.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { PermissionsService } from './shared/services/permissions.service';
     LoginGoogleComponent,
     CallbackComponent,
     RegisterComponent,
-    PromoteComponent
+    PromoteComponent,
+    SelectMonthComponent
   ],
   imports: [
     BrowserModule,

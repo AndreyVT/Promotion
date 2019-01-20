@@ -25,17 +25,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{759A6000-8D2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{681E660D-92EA-47AF-AC80-E3CB7EED8A57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotion.Server.Web.ViewModel", "Promotion.Server.Web.ViewModel\Promotion.Server.Web.ViewModel.csproj", "{87B90A9E-8CA1-4332-BB47-9071717F5D81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.Server.Web.ViewModel", "Promotion.Server.Web.ViewModel\Promotion.Server.Web.ViewModel.csproj", "{87B90A9E-8CA1-4332-BB47-9071717F5D81}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DomainWebLayer", "DomainWebLayer", "{F1411330-B0AC-454D-946C-D22E728C89E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotion.DomainWebLayer.Mappers", "Promotion.DomainWebLayer.Service\Promotion.DomainWebLayer.Mappers.csproj", "{1E0B7F46-FAE0-4C63-85EB-61242EFDC20F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.DomainWebLayer.Mappers", "Promotion.DomainWebLayer.Service\Promotion.DomainWebLayer.Mappers.csproj", "{1E0B7F46-FAE0-4C63-85EB-61242EFDC20F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DalDomainLayer", "DalDomainLayer", "{A44F5ED5-EBF6-4CE9-BE91-D4D3AC080974}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotion.DalDomainLayer.Services", "Promotion.DalDomainLayer.Services\Promotion.DalDomainLayer.Services.csproj", "{81216BF5-FC77-4069-ADE3-2FD002C4F909}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.DalDomainLayer.Services", "Promotion.DalDomainLayer.Services\Promotion.DalDomainLayer.Services.csproj", "{81216BF5-FC77-4069-ADE3-2FD002C4F909}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotion.Domain.Services", "Promotion.Domain.Services\Promotion.Domain.Services.csproj", "{BFFC0CE4-DDD8-446E-8FB8-3268865ADE45}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{461BAFD5-7E3B-4E39-9458-3948FDF53CC7}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,12 +12,6 @@ export class ValueService {
   }
 
   getValues() {
-    this.http.get(this.apiHostValue, {})
-      .subscribe(
-        (data: any) => {
-          console.log(data);
-        },
-        error => console.log(error)
-      );
+    return this.http.get(this.apiHostValue, {});
   }
 }

@@ -1,0 +1,20 @@
+.container {
+  border: 1px solid #000;
+  padding: 1.6em;
+}
+
+.pro-margin {
+  margin: 10px;
+}
+
+.left {
+  margin-left: auto;
+}
+
+.right {
+  margin-right: auto;
+}
+
+.top-spacer {
+  flex: 1 1 auto;
+}

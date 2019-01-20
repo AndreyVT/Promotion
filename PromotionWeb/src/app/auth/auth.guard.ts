@@ -23,7 +23,9 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isLoggedIn) {
       console.log('ActivatedRouteSnapshot NEXT: ', next);
       console.log('RouterStateSnapshot STATE: ', state);
-      return true;
+      const normalRoute = state.url.substring(state.url.lastIndexOf('/') + 1);
+      console.log('normalRoute: ', normalRoute);
+      return this.permissionsService.isSegmentAllow(normalRoute);
     }
 
     this.router.navigate(['/']);

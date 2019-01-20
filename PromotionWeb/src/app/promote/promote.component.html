@@ -1,13 +1,26 @@
-<mat-card>
-  <mat-card-title>Simple card</mat-card-title>
-  <mat-card-subtitle>Simple card</mat-card-subtitle>
+<mat-grid-list cols="1" rowHeight="10:1">
+  <mat-grid-tile>
+    <mat-toolbar class="pro-margin">
+      <app-select-month [currentPeriod]="currentPeriod" (periodChanged)="onPeriodChanged($event)"></app-select-month>
+    </mat-toolbar>
+  </mat-grid-tile>
 
-  <mat-card-content>
-    <img mat-card-lg-image src="https://avatars.mds.yandex.net/get-pdb/231404/ccbce684-aa28-4213-b939-1c3729cd541e/s1200">
-    <mat-card-actions><button (click)="getValues()">Get values </button></mat-card-actions>
-  </mat-card-content>
+  <mat-grid-tile>{{currentPeriod.name}}</mat-grid-tile>
+  <mat-grid-tile rowspan="8" style="background-color: wheat">
+    <mat-card>
+      <mat-card-title>Simple card</mat-card-title>
+      <mat-card-subtitle>Simple card</mat-card-subtitle>
 
-  <mat-card-footer>
+      <mat-card-content>
+        <img mat-card-lg-image src="https://avatars.mds.yandex.net/get-pdb/231404/ccbce684-aa28-4213-b939-1c3729cd541e/s1200">
+        <mat-card-actions><button (click)="getValues()">Get values </button></mat-card-actions>
+      </mat-card-content>
 
-  </mat-card-footer>
-</mat-card>
+      <mat-card-footer>
+
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+
+
